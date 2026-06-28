@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #0b1220;
+  color: #e6edf7;
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The signature type move: a wide, instrument-panel nameplate. */
+.nameplate {
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.display {
+  font-stretch: 118%;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #56688a;
+}
+
+/* Instrument graticule behind the hero. */
+.graticule {
+  background-image:
+    linear-gradient(to right, rgba(45, 212, 191, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(45, 212, 191, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Page-load: sweep each trace on once, like a scope refreshing. */
+.trace-draw {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: sweep 1.1s ease-out forwards;
+}
+@keyframes sweep {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.pulse-dot {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    r: 3.5;
+  }
+  50% {
+    opacity: 0.35;
+    r: 5.5;
+  }
+}
+
+.live-dot {
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* A packet travelling along a pipeline connector. */
+.flow-dot {
+  animation: flow 2.2s linear infinite;
+}
+@keyframes flow {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+.flow-line {
+  background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.5), transparent);
+  background-size: 200% 100%;
+  animation: flowline 2.2s linear infinite;
+}
+@keyframes flowline {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-draw,
+  .pulse-dot,
+  .live-dot,
+  .flow-dot,
+  .flow-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

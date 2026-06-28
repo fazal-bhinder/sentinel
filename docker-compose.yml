@@ -1,0 +1,21 @@
+# The only infrastructure. The app itself runs via `npm run dev` (no Docker).
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: oximy-db
+    environment:
+      POSTGRES_USER: oximy
+      POSTGRES_PASSWORD: oximy
+      POSTGRES_DB: oximy
+    ports:
+      - "5433:5432"
+    volumes:
+      - oximy-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U oximy -d oximy"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  oximy-pgdata:
