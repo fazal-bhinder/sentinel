@@ -14,5 +14,5 @@ COPY . .
 # Expose Fastify's API port
 EXPOSE 3001
 
-# Start the API server
-CMD ["npm", "run", "start"]
+# Run migrations and then start the API server
+CMD ["sh", "-c", "npm run migrate && npm run start"]
