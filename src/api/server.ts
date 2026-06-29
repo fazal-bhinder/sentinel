@@ -119,7 +119,7 @@ app.get("/providers", {
   const rows = await providerHealth();
   // "parser version live" = what the registry would parse with now, alongside
   // the version that actually produced the stored events.
-  return rows.map((r) => ({
+  return rows.map((r:any) => ({
     ...r,
     registered_versions: registry.versions(r.provider),
     live_version: registry.latest(r.provider)?.version ?? r.parser_version,
