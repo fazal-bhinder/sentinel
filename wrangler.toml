@@ -6,4 +6,3 @@ compatibility_flags = [ "nodejs_compat" ]
 [[hyperdrive]]
 binding = "HYPERDRIVE"
 id = "c6dec00f6b494b4592c14151d3526636"
-localConnectionString = "postgresql://neondb_owner:npg_mrdGPiN1zTp9@ep-broad-shape-ataamso4-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require"
