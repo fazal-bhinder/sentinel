@@ -1,5 +1,22 @@
 import pg from "pg";
 
+// Shim setTimeout/setInterval to support Node-specific .unref()/.ref() methods inside V8 isolates
+const shimTimer = (original: any) => {
+  return function (cb: any, ms: any, ...args: any[]) {
+    const timer = original(cb, ms, ...args);
+    if (timer && typeof timer === "object" && !("unref" in timer)) {
+      (timer as any).unref = () => timer;
+      (timer as any).ref = () => timer;
+    }
+    return timer;
+  };
+};
+
+if (typeof globalThis !== "undefined") {
+  globalThis.setTimeout = shimTimer(globalThis.setTimeout) as any;
+  globalThis.setInterval = shimTimer(globalThis.setInterval) as any;
+}
+
 let activePool: pg.Pool | null = null;
 
 export function getConnectionString(env?: any): string {
@@ -17,7 +34,12 @@ export function getConnectionString(env?: any): string {
 export function initPool(env?: any) {
   if (activePool) return activePool;
   const connectionString = getConnectionString(env);
-  activePool = new pg.Pool({ connectionString });
+  activePool = new pg.Pool({
+    connectionString,
+    max: 10,
+    idleTimeoutMillis: 100, // close idle connections after 100ms
+    allowExitOnIdle: true,  // allow the event loop to exit if all connections are idle
+  });
   return activePool;
 }
 
